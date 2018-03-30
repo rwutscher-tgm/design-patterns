@@ -47,11 +47,11 @@ Wir haben eine Superklasse und die dazugehörigen Unterklassen. Wir wollen nun e
 
 Es gebe jetzt einige verschiedene Möglichkeit dieses Problem zu lösen. Allerdings haben die Wege, welche den meisten Leuten einfallen, immer auch weitere Probleme.
 
-1. *Methode in der Superklasse:*
+1. *Methode in der Superklasse:*  
 Mit einer Methode in der Superklasse die erstellt und implementiert, haben zwar alle Unterklassen, welche die Methode benötigten, diese, allerdings hat auch jede andere Unterklasse diese Methode dann. Dies ist nicht gut, da nicht alle Unterklassen die Methode gleich implementieren wollen oder sie gar überhaupt nicht haben wollen. Für jede einzelne dieser müsste man die Methode überschreiben. Somit würde dieser Lösungsvorschlag vor allem bei größeren Projekten nicht zu empfehlen.
-2. *Interfaces:*
+2. *Interfaces:*  
 Eine weitere Möglichkeit wären Interfaces für jede dieser benötigten Methoden. Hier müssten alle Unterklassen, welche die Methode benötigen, das Interface implementieren. Hier haben wir aber das Problem, dass jede Unterklasse nun die Methode neu erstellen müsste. Dadurch kann es sein, dass der gleiche Code mehrmals auftaucht, in den verschiedenen Klassen. Würde man diesen dann auch noch ändern wollen, müsste man dies in jeder Unterklasse tun. Das alles führt zu einer weiteren nicht idealen Lösung.
-3. ***Strategy Pattern:***
+3. ***Strategy Pattern:***  
 Beim Strategy Pattern werden nun die ersten 3 OO Principles umgesetzt. **Z**uerst wird alles, was sich ändern kann, aussortiert und in einen seperaten "Bereich" (Klassen, ...) gepackt. Somit befindet sich nun alles, was sich ändern kann, außerhalb der Klassenhierarchie. Bei Änderungen muss diese nicht mehr geändert werden. **I**n dem seperaten "Bereich" haben wir nun ein Interface. In diesem Interface befindet sich nur die eine Methode, welche mehrere Implementationen haben soll. Nun erstellt man für jede Variante der Methode eine Klasse, welche das Interface implementiert. **D**araufhin kann man nun in der Superklasse ein Objekt mit der Variante der Methode erstellen (ich erstelle eine Objekt von KlasseA, da ich die Variante A der Methode benötige). Mit Setter-Methoden kann man die Variante auch während der Laufzeit ändern, was bei der Vererbung nicht möglich wäre.
 
 **Beispiel & UML:**
@@ -77,12 +77,20 @@ Hier kommt außerdem ein neues OO Principle ins Spiel: *strive for loosely coupl
 
 Auch beim Observer Pattern gibt es wieder mehr als nur eine Möglichkeit das Problem zu lösen.
 
-1. *Java Observable*
+1. *Java Observable*  
 Bei dieser Lösung wird die in Java eingebaute Version des Observer Patterns verwendet. Das Problem bei dieser Variante des Observer Patterns ist, dass java.util.Observable eine Klasse ist. Das heißt, dass wir einige OO Principles wieder missachtet werden, da wir Vererbung statt Interfaces benutzen müssen.
 ![Observable](https://github.com/TGM-HIT/sew4-design-patterns-ntesanovic-tgm/blob/master/images/java_observable.png)
-2. ***Observer Pattern*** <small>(aus dem Buch)</small>
+2. ***Observer Pattern*** <small>(aus dem Buch)</small>  
 ![Observer_Pattern](https://github.com/TGM-HIT/sew4-design-patterns-ntesanovic-tgm/blob/master/images/observer.png)
-Hier haben wir nun die vom Buch vorgeschlagene Variante. Wir haben ein Interface für das Subjekt und wir haben ein Interface für die Observer. Es wird gezeigt, dass *Subject* eine HAS-A-Beziehung zu *Observer* hat. Das heißt, dass das Subjekt Beobachter hat. Allerdings gibt es hier auch noch eine HAS-A-Beziehung zwischen den konkreten Implementierungen. Dies ist etwas, was wir schon vorher als eher unerwünscht betrachtet haben. Allerdings kann man dadurch eine notify-Methode erstellen ohne Attribute. <small> Wieso dies so wichtig ist, weiß ich gerade auch nicht </small>
+Hier haben wir nun die vom Buch vorgeschlagene Variante. Wir haben ein Interface für das Subjekt und wir haben ein Interface für die Observer. Es wird gezeigt, dass *Subject* eine HAS-A-Beziehung zu *Observer* hat. Das heißt, dass das Subjekt Beobachter hat. Allerdings gibt es hier auch noch eine HAS-A-Beziehung zwischen den konkreten Implementierungen. Dies ist etwas, was wir schon vorher als eher unerwünscht betrachtet haben. Allerdings kann man dadurch eine notify-Methode erstellen ohne Attribute. <small> Wieso dies so wichtig ist, weiß ich gerade auch nicht. </small>
+
+**Beispiel:**
+
+![Observer_Pattern_Beispiel](https://github.com/TGM-HIT/sew4-design-patterns-ntesanovic-tgm/blob/master/images/observer_example.png)
+
+In diesem Beispiel wollen wir die Daten einer Wetterstation erhalten und diese dann an alle Observer weitergeben. Wenn sich also das Wetter ändert, werden alle registrierten Beobachter, benachrichtigt und, da jedes der Displays schon ein WeatherData-Objekt besitzt, muss für *update* auch kein Parameter übergeben werden, um zu wissen, bei welchem Objekt sich die Daten geändert haben. Daraufhin können die Daten dann ausgegeben werden.
+
+**Beispielcode:**
 
 ### Decorator
 
