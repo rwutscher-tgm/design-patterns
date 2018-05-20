@@ -129,4 +129,6 @@ Und nun kommen wir zum Decorator Pattern, mit welchem wir auch das Design Princi
 
 ~~~
 
-Mit dem Decorater Pattern ist eben dies möglich.
+### Factory
+
+
