@@ -34,7 +34,11 @@ Anstatt vorhandenen Code immer wieder zu ändern, sollte man eher auf Interfaces
 
 ### loosely coupled
 
-Hat man Objekte, welche zusammen arbeiten, soll man diese möglichst unabhängig voneinander gestalten wie nur möglich.(Observer)
+Hat man Objekte, welche zusammen arbeiten, soll man diese möglichst unabhängig voneinander gestalten wie nur möglich. <small>(Observer)</small>
+
+### open for extension - closed for modification
+
+Man soll die Möglichkeit haben Klassen zu erweitern, um z.B. neue Ansprüche zu erfüllen. Allerdings soll währenddessen der bereits vorhandene Code nicht geändert werden. <small>(Decorator)</small>
 
 ## Patterns
 
@@ -88,10 +92,41 @@ Hier haben wir nun die vom Buch vorgeschlagene Variante. Wir haben ein Interface
 
 ![Observer_Pattern_Beispiel](https://github.com/TGM-HIT/sew4-design-patterns-ntesanovic-tgm/blob/master/images/observer_example.png)
 
-In diesem Beispiel wollen wir die Daten einer Wetterstation erhalten und diese dann an alle Observer weitergeben. Wenn sich also das Wetter ändert, werden alle registrierten Beobachter, benachrichtigt und, da jedes der Displays schon ein WeatherData-Objekt besitzt, muss für *update* auch kein Parameter übergeben werden, um zu wissen, bei welchem Objekt sich die Daten geändert haben. Daraufhin können die Daten dann ausgegeben werden.
+In diesem Beispiel wollen wir die Daten einer Wetterstation erhalten und diese dann an alle Observer weitergeben. Wenn sich also das Wetter ändert, werden alle registrierten Beobachter, benachrichtigt und, da jedes der Displays schon ein WeatherData-Objekt besitzt, muss für *update* auch kein Parameter übergeben werden, um zu wissen, bei welchem Objekt sich die Daten geändert haben. Daraufhin können die Daten dann ausgegeben werden.  
+Das Observer Pattern wird außerdem bei z.B. Java Swing verwendet -> Listeners.
 
 **Beispielcode:**
 
 ### Decorator
 
+**Problem:**
 
+Wir haben eine Basisklasse und einige konkretisierte Klassen. Nun wollen wir diese Subklassen dynamisch erweitern können bzw. dekorieren können. Das heißt, wir haben zum Beispiel eine Klasse, welches Text einlesen und dann etwas entsprechendes ausgeben kann und wir wollen nun Möglichkeiten erstellen um die Ausgabe nur in Klein - oder Großbuchstaben auszugeben.
+
+Als Beispiel hatten wir den Café-Shop, welcher die verschiedenen Extras(Mocha, Whip, ...), zu den Kaffees hinzufügen musste.
+
+**Lösung:**
+
+Wie schon zuvor haben wir wieder mehrere Möglichkeiten, dieses Problem zu lösen.
+
+1. *Klassen für alle Möglichkeiten:*  
+
+Eine der erwähnten Möglichkeiten ist die Erstellung von Klassen für jede einzelne Kombination von Kaffees und Extras. Allerdings führt dies zu einer "Klassenexplosion". Es entsteht eine Unmenge an Klassen und falls dann eine Zutat sich, vom Preis, ändert, muss man somit alle Klassen ändern, welche diese Zutat benutzt haben.
+
+2. *Attribute und Vererbung:*  
+
+Das vererben der Attribute und diese immer auf *TRUE* oder *FALSE* hört sich auf jeden Fall schon besser an. Allerdings hat auch diese Methode einige Probleme. Hierzu zählt zum Beispiel, dass bei dem Hinzufügen von neuen Zutaten nicht nur neue Getter - und Setter-Methoden implementiert werden müssen, sonder auch, dass die Kostenfunktion umgeschrieben werden muss.
+
+3. ***Decorator Pattern:***  
+
+Und nun kommen wir zum Decorator Pattern, mit welchem wir auch das Design Principle **open for extension - closed for modification**. Indem man die Zutaten um den Kaffee "wrappet", kann man, ohne die Benutzung von Attributen oder unzähligen Klassen, die Kosten ganz leicht ausrechnen.
+
+**UML & Beispielcode: **
+
+![Observer_Pattern_Beispiel](https://github.com/TGM-HIT/sew4-design-patterns-ntesanovic-tgm/blob/master/images/decorator_pattern.png)
+
+~~~java
+
+~~~
+
+Mit dem Decorater Pattern ist eben dies möglich.
