@@ -1,5 +1,9 @@
 # Design Patterns
 
+### Inhaltsverzeichnis
+
+[Strategy Pattern](#Strategy)
+
 ## OO Basics
 
 ### Abstraction
@@ -39,6 +43,10 @@ Hat man Objekte, welche zusammen arbeiten, soll man diese möglichst unabhängig
 ### open for extension - closed for modification
 
 Man soll die Möglichkeit haben Klassen zu erweitern, um z.B. neue Ansprüche zu erfüllen. Allerdings soll währenddessen der bereits vorhandene Code nicht geändert werden. <small>(Decorator)</small>
+
+### depend upon abstractions
+
+Eine High-Level Komponente sollte nicht von Low-Level Komponenten abhängig sein. Hiermit ist gemeint, dass eine Klasse (High-Level) nicht von von vielen konkreten Klassen (Low-Level) abhängig sein soll. Dieses Prinzip kann man erfüllen, indem die Low-Level Komponenten von einer abstrakten Klasse erben. Die High-Level Komponente kann dann diese Klasse nutzen um nicht mehr von den ganzen Low-Level Komponenten abhängig zu sein.
 
 ## Patterns
 
@@ -82,7 +90,7 @@ Hier kommt außerdem ein neues OO Principle ins Spiel: *strive for loosely coupl
 Auch beim Observer Pattern gibt es wieder mehr als nur eine Möglichkeit das Problem zu lösen.
 
 1. *Java Observable*  
-Bei dieser Lösung wird die in Java eingebaute Version des Observer Patterns verwendet. Das Problem bei dieser Variante des Observer Patterns ist, dass java.util.Observable eine Klasse ist. Das heißt, dass wir einige OO Principles wieder missachtet werden, da wir Vererbung statt Interfaces benutzen müssen.
+Bei dieser Lösung wird die in Java eingebaute Version des Observer Patterns verwendet. Das Problem bei dieser Variante des Observer Patterns ist, dass java.util.Observable eine Klasse ist. Das heißt, dass einige OO Principles wieder missachtet werden, da wir Vererbung statt Interfaces benutzen müssen.
 ![Observable](https://github.com/TGM-HIT/sew4-design-patterns-ntesanovic-tgm/blob/master/images/java_observable.png)
 2. ***Observer Pattern*** <small>(aus dem Buch)</small>  
 ![Observer_Pattern](https://github.com/TGM-HIT/sew4-design-patterns-ntesanovic-tgm/blob/master/images/observer.png)
@@ -180,4 +188,23 @@ public class StarbuzzCoffee {
 
 ### Factory
 
+Wie schon bekannt ist, gilt das Principle *program to an interface, not an implementation*. Allerdings brechen wir dieses jedes mal wenn wir *new* benutzen, da man hier eine konkrete Klasse angeben muss, da Interfaces und abstrakte Klassen nicht instanzierbar sind. Für dieses Problem gibt es nun mehrere Lösungsmöglichkeiten.
 
+**Simple Factory**
+
+Die erste vorgestellte Möglichkeit ist die Simple Factory, welche eigentlich kein richtiges Design Pattern ist, sondern nur ein Idiom (immer wieder auftauchndes Konstrukt). Z.B. haben wir eine Methode mit einem Parameter, wobei der Parameter das Objekt bestimmt. Allerdings können neue Objekte hinzu kommen, wie zum Beispiel neue Gerichte in einem Restaurant o.ä., wodurch man diese auch bei der Methode berücksichtigen muss. Dadurch haben wir Code, welcher sich ändern kann. Dieser sollte in einer anderen Klasse abgelegt werden, anstatt mit nicht-verändertem Code zusammen zu lassen.
+
+#### Factory Method
+
+Bei dem Factory Method Pattern haben wir eine abstrakte Klasse (Creator/Factory), welche *factoryMethod* als abstrakte Methode besitzt. Außerdem kann die Klasse weitere Methoden haben, welche mit dem Ergebnis der *factoryMethod* arbeiten. In diesem Pattern "entscheiden" die Subklassen (von der Creator-Klasse -> konkrete Creator/Factory), welches konkrete Objekt erstellt wird. Hiermit wird ausgedrückt, dass der Creator ohne Wissen über das eigentlich Ergebnis, geschrieben wurde und nicht weiß womit genau er arbeiten wird.<small>Es wäre auch möglich eine Standardvariante der *factoryMethod* festzulegen.</small>
+Z.B. haben wir nun wieder einen PizzaStore (Creator), welcher mit Pizzen (abstrakte Klasse für das Produkt) arbeitet und nicht mit den konkreten Pizzen. Er bekommt zwar eine konkrete Pizza zum arbeiten, weiß aber nicht, welche Pizza es ist und dies braucht er auch nicht zu wissen. So lange alle wichtigen Methoden der Pizza in der abstrakten Klasse definiert wurden, kann er jede konkrete Pizza gleich behandeln.
+
+#### Abstract Factory
+
+Mit einer Abstract Factory hat man die Möglichkeit, Familien von Produkten bzw. Objekten zu erstellen. Wir haben also eine abstrakte Klasse, welche unsere Factory ist. In dieser werden die Methoden deklariert, welche für die Erstellung der einzelnen Prduktfamilienmitglieder zuständig sind. Die Subklassen dieser AbstractFactory kümmern sich um die Erzeugung der Objekte bzw. sie geben an welches konkrete Produkt erstellt wird. Somit kann man durch das Erzeugen einer der SubFactories bei einem Programm festlegen, welche Produkte es erhält. Oft wird für die konkreten Factories das Factory Method Pattern benutzt.
+Bsp.: Wir haben wieder einen PizzaStore, allerdings schauen wir dieses mal auf die Zutaten. Wir haben also eine AbstractFactory mit create-Methoden für die Zutaten wie Käse, Sauce, .... All diese Zutaten gehören zu der *Zutatenfamilie*. In den Subklassen werden nun die bereits definierten create-Methoden genutzt, um die jeweiligen Zutaten zu Erstellen. Nun wollen wir eine Margherita bzw. Käse Pizza. Wir übergeben der Käse Pizza-Klasse die jeweilige Subklassen-Factory, welche benötigt wird und dann kann durch aufrufen der create-Methoden die richtige Zutatenfamilie erhalten werden.
+
+#### Factory Method vs. Abstract Factory
+
+Der Unterschied zwischen diesen beiden ist, dass das Factory Method Pattern Subklassen benutzt, welche die Erstellung von konkreten Objekte für den Client übernehmen, damit dieser sich nur noch auf die abstrakte Klasse konzentirieren muss.
+Währenddessen bietet bei Abstract Factory eine abstrakte Klasse Methoden bzw. Möglichkeiten um eine Familie von Produkten zu erzeugen. Die Art, wie diese Produkte erzeugt werden, wird dann von den konkreten Klassen festgelegt. Und um diese dann nutzen zu können, muss man eine konkrete Factory initialisieren und dann Code übergeben werden, welcher mithilfe der Factory die Produkte erstellt bzw. erhaltet.
