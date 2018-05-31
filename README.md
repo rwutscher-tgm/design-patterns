@@ -12,11 +12,11 @@
 
 ### encapsulate what varies
 
-Alles was sich ändern kann soll zusammengefügt werden und somit getrennt von sich nicht-änderndem Code werden. Somit sollen dann Nebeneffekte und unerwünschte Änderungen bzw. Probleme vermeiden.
+Alles was sich ändern kann soll zusammengefügt werden und somit getrennt werden, von sich nicht-änderndem Code. Hiermit sollen dann Nebeneffekte und unerwünschte Änderungen bzw. Probleme vermieden werden.
 
 ### composition > inheritance
 
-Man soll Kapselung der Vererbung vorziehen, da Vererbung nicht wirklich dynamisch ist.
+Man soll Kapselung der Vererbung vorziehen, da Vererbung nicht wirklich dynamisch ist. Man keine die Klasse, von welcher man erbt, nicht während der Laufzeit ändern.
 
 ### interfaces not implementations
 
@@ -24,7 +24,7 @@ Anstatt vorhandenen Code immer wieder zu ändern, sollte man eher auf Interfaces
 
 ### loosely coupled
 
-Hat man Objekte, welche zusammen arbeiten, soll man diese möglichst unabhängig voneinander gestalten wie nur möglich. <small>(Observer)</small>
+Hat man Objekte, welche zusammen arbeiten, soll man diese möglichst unabhängig voneinander gestalten. <small>(Observer)</small>
 
 ### open for extension - closed for modification
 
@@ -32,7 +32,7 @@ Man soll die Möglichkeit haben Klassen zu erweitern, um z.B. neue Ansprüche zu
 
 ### depend upon abstractions
 
-Eine High-Level Komponente sollte nicht von Low-Level Komponenten abhängig sein. Hiermit ist gemeint, dass eine Klasse (High-Level) nicht von von vielen konkreten Klassen (Low-Level) abhängig sein soll. Dieses Prinzip kann man erfüllen, indem die Low-Level Komponenten von einer abstrakten Klasse erben. Die High-Level Komponente kann dann diese Klasse nutzen um nicht mehr von den ganzen Low-Level Komponenten abhängig zu sein.
+Eine High-Level Komponente sollte nicht von Low-Level Komponenten abhängig sein. Hiermit ist gemeint, dass eine Klasse (High-Level) nicht von von vielen konkreten Klassen (Low-Level) abhängig sein soll. Dieses Prinzip kann man erfüllen, indem die Low-Level Komponenten von einer abstrakten Klasse erben. Die High-Level Komponente kann dann diese Klasse nutzen um nicht mehr von den ganzen Low-Level Komponenten abhängig zu sein. <small>(Factory)</small>
 
 ## Patterns
 
