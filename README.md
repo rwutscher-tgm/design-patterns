@@ -2,7 +2,8 @@
 
 ### Inhaltsverzeichnis
 
-[Strategy Pattern](#Strategy)
+- [Strategy Pattern](#strategy-pattern)
+- [Observer Pattern](#observer-pattern)
 
 ## OO Basics
 
@@ -50,7 +51,7 @@ Eine High-Level Komponente sollte nicht von Low-Level Komponenten abhängig sein
 
 ## Patterns
 
-### Strategy
+### Strategy Pattern
 
 **Problem:**
 Wir haben eine Superklasse und die dazugehörigen Unterklassen. Wir wollen nun eine Methode hinzufügen. Allerdings fällt uns auf, dass nicht jede Unterklasse die Methode auf die gleiche Art und Weise benutzen soll. Somit müssen wir nun einen Weg finden, diese Methode an die jeweilige Unterklasse anzupassen. Also die erste Unterklasse hat die Methode in der Variante A, die zweite in der Variante B usw. Natürlich kann eine Variante auch mehrmals benutzt werden.
@@ -78,7 +79,7 @@ Dieses Bild zeigt ein Beispiel und UML-Diagramm aus dem Buch "Head First Design 
 
 ~~~
 
-### Observer
+### Observer Pattern
 
 **Problem:**
 
@@ -105,7 +106,7 @@ Das Observer Pattern wird außerdem bei z.B. Java Swing verwendet -> Listeners.
 
 **Beispielcode:**
 
-### Decorator
+### Decorator Pattern
 
 **Problem:**
 
@@ -186,7 +187,7 @@ public class StarbuzzCoffee {
 
 ~~~
 
-### Factory
+### Factory Pattern
 
 Wie schon bekannt ist, gilt das Principle *program to an interface, not an implementation*. Allerdings brechen wir dieses jedes mal wenn wir *new* benutzen, da man hier eine konkrete Klasse angeben muss, da Interfaces und abstrakte Klassen nicht instanzierbar sind. Für dieses Problem gibt es nun mehrere Lösungsmöglichkeiten.
 
