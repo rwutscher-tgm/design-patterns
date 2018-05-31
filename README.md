@@ -4,23 +4,8 @@
 
 - [Strategy Pattern](#strategy-pattern)
 - [Observer Pattern](#observer-pattern)
-
-## OO Basics
-
-### Abstraction
-
-
-
-### Encapsulation
-
-
-
-### Polymorphism
-
-
-
-### Inheritence
-
+- [Decorator Pattern](#decorator-pattern)
+- [Factory Pattern](#factroy-pattern)
 
 
 ## OO Principles
@@ -75,8 +60,75 @@ Dieses Bild zeigt ein Beispiel und UML-Diagramm aus dem Buch "Head First Design 
 
 **Beispielcode:**
 
-~~~java
+Hier haben wir ein ähnliches Beispiel, aber statt Enten haben wir nun Katzen.
+Katzen haben hier ein Jagdverhalten und geben verschiedene Laute von sich.
 
+~~~ java
+public abstract class Cat {
+    HuntingBehavior huntingbehavior;
+    SoundBehavior soundbehavior;
+
+    public void setHuntingbehavior(HuntingBehavior huntingbehavior) {
+        this.huntingbehavior = huntingbehavior;
+    }
+
+    public void setSoundbehavior(SoundBehavior soundbehavior) {
+        this.soundbehavior = soundbehavior;
+    }
+
+    public abstract void display();
+
+    public void performHunt(){
+        huntingbehavior.hunt();
+    }
+
+    public void makeSound(){
+        soundbehavior.makesound();
+    }
+
+    public void beFluffy() {
+        System.out.println("All cats are fluffy!");
+    }
+}
+
+public class Lion extends Cat {
+    public Lion() {
+        huntingbehavior = new HuntInGroup();
+        soundbehavior = new Roar();
+    }
+
+    @Override
+    public void display() {
+        System.out.println("Lion");
+    }
+}
+~~~
+
+Ein Interface für die verschiedenen Laute, welche Katzen von sich geben können und eine Klasse, welche das Interface implmentiert hat.
+~~~ java
+public interface SoundBehavior {
+    void makesound();
+}
+
+public class Roar implements SoundBehavior {
+    @Override
+    public void makesound() {
+        System.out.println("roar");
+    }
+}
+~~~
+Ein Interface für die verschiedenen Jagdverhalten einer Katze und eine Klasse, welche das Interface implmentiert hat.
+~~~ java
+public interface HuntingBehavior {
+    void hunt();
+}
+public class HuntInGroup implements HuntingBehavior {
+
+    @Override
+    public void hunt() {
+        System.out.println("hunt in group");
+    }
+}
 ~~~
 
 ### Observer Pattern
@@ -106,6 +158,168 @@ Das Observer Pattern wird außerdem bei z.B. Java Swing verwendet -> Listeners.
 
 **Beispielcode:**
 
+*java.util.Observable*:
+Die Klasse WeatherData erweitert das von *java* bereitgestellte Observable.
+~~~ java
+import java.util.Observable;
+
+public class WeatherData extends Observable {
+
+    private float temperature;
+    private float humidity;
+    private float pressure;
+
+    public WeatherData(){} // here you would create a structure (e.g. ArrayList) to hold all Observers
+
+    public void measurementsChanged(){
+        setChanged();
+        notifyObservers();
+    }
+
+    public void createNewZeitung(float temperature, float humidity, float pressure){
+        this.temperature = temperature;
+        this.humidity = humidity;
+        this.pressure = pressure;
+        measurementsChanged();
+    }
+   //getter-Methoden
+}
+~~~
+
+~~~ java
+public interface DisplayElement {
+    void display();
+}
+~~~
+
+Der Observer implementiert Observer von java.util und wird zu den Observern des Observables hizugefügt.
+
+~~~ java
+import java.util.Observable;
+import java.util.Observer;
+
+public class CurrentConditionDisplay implements Observer, DisplayElement {
+
+    Observable observable;
+    private float temperature;
+    private float humidity;
+    private float pressure;
+
+    public CurrentConditionDisplay(Observable observable){
+        this.observable = observable;
+        observable.addObserver(this);
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+        if(o instanceof WeatherData){
+            WeatherData weatherData = (WeatherData) o;
+            this.temperature = weatherData.getTemperature();
+            this.humidity = weatherData.getHumidity();
+            this.pressure = weatherData.getPressure();
+            display();
+        }
+    }
+
+    @Override
+    public void display() {
+        System.out.println("Current condition: " + this.temperature + "C degrees, "
+                + this.humidity + "% humidity and " + this.pressure + " mbar pressure");
+    }
+}
+~~~
+
+*eigene Implementierung*
+
+Das Interface definiert die Methoden, welche für die Interaktionen mit den Observern genutzt werden.
+
+~~~ java
+public interface Subject {
+    void registerObserver(Observer o);
+    void removeObserver(Observer o);
+    void notifyObserver();
+}
+~~~
+
+Im Gegensatz zu der javainternen Implementierung, brauchen wir hier nun eine ArrayList, welche alle Observer beinhaltet, um ihnen auch die Daten senden zu können. Des Weiteren implementiert die Klasse das Subject-Interface und muss somit die Observer verwalten.
+
+~~~ java
+import java.util.ArrayList;
+
+public class WeatherData implements Subject {
+
+    private ArrayList<Observer> observers;
+    private float temperature;
+    private float humidity;
+    private float pressure;
+
+    public WeatherData(){
+        observers = new ArrayList<Observer>();
+    }
+
+    @Override
+    public void registerObserver(Observer o) {
+        observers.add(o);
+    }
+
+    @Override
+    public void removeObserver(Observer o) {
+        if(observers.indexOf(o) >= 0) observers.remove(o);
+    }
+
+    @Override
+    public void notifyObserver() { // es wird von jedem Observer die update-Methode aufgerufen
+        for(Observer observer: observers){
+            observer.update(this.temperature, this.humidity, this.pressure);
+        }
+    }
+
+    public void setMeasurements(float temperature, float humidity, float pressure) {
+        this.temperature = temperature;
+        this.humidity = humidity;
+        this.pressure = pressure;
+        measurementsChanged();
+    }
+
+    private void measurementsChanged() {
+        notifyObserver();
+    }
+}
+
+~~~
+
+Das Interface, welche alle Klassen implementieren müssen, falls sie die Daten des Observable, hier die Wetterdaten, erhalten wollen.
+
+~~~ java
+public interface Observer {
+    void update(float temperature, float humidity, float pressure);
+}
+~~~
+
+Diese Klasse implementiert das Observer-Interface und wird somit benachrichtigt, wenn sich die Wetterdaten geändert haben.
+
+~~~ java
+public class CurrentConditionsDisplay implements Observer {
+    private float temperature;
+    private float humidity;
+    private float pressure;
+    private Subject weatherdata;
+
+    public CurrentConditionsDisplay(Subject weatherdata){
+        this.weatherdata = weatherdata;
+        weatherdata.registerObserver(this);
+    }
+
+    @Override
+    public void update(float temperature, float humidity, float pressure) {
+        this.temperature = temperature;
+        this.humidity = humidity;
+        this.pressure = pressure;
+    }
+    // code für weiteres
+}
+~~~
+
 ### Decorator Pattern
 
 **Problem:**
@@ -134,6 +348,8 @@ Und nun kommen wir zum Decorator Pattern, mit welchem wir auch das Design Princi
 
 ![Observer_Pattern_Beispiel](https://github.com/TGM-HIT/sew4-design-patterns-ntesanovic-tgm/blob/master/images/decorator_pattern.PNG)
 
+Zuerst muss eine abstrakte Klasse für die Getränke erstellt werden, zusammen mit den konkreten Klassen.
+
 ~~~java
 
 public abstract class Beverage {
@@ -146,10 +362,6 @@ public abstract class Beverage {
 	public abstract double cost();
 }
 
-public abstract class CondimentDecorator extends Beverage {
-	public abstract String getDescription();
-}
-
 public class HouseBlend extends Beverage {
 	public HouseBlend() {
 		description = "House Blend Coffee";
@@ -158,6 +370,14 @@ public class HouseBlend extends Beverage {
 	public double cost() {
 		return .89;
 	}
+}
+~~~
+
+Die konkrete Decorator erben von dem abstrakten Decorator, welcher in diesem Fall die getDescription-Methode abstrakt macht.
+
+~~~ java
+public abstract class CondimentDecorator extends Beverage {
+	public abstract String getDescription();
 }
 
 public class Mocha extends CondimentDecorator {
@@ -175,7 +395,11 @@ public class Mocha extends CondimentDecorator {
 		return .20 + beverage.cost();
 	}
 }
+~~~
 
+Um nun einen Kaffee mit einem Decorator zu erweitern, muss man das Kaffee-Objekt erstellen und dann beim hinzufügen des Decorators, das vorher erstellte Objekt ersetzen mit einem neuen Objekt, welches das ürsprüngliche Objekt als Parameter hat.
+
+~~~ java
 public class StarbuzzCoffee {
 	public static void main(String args[]) {
 		Beverage beverage = new HouseBlend();
@@ -195,15 +419,140 @@ Wie schon bekannt ist, gilt das Principle *program to an interface, not an imple
 
 Die erste vorgestellte Möglichkeit ist die Simple Factory, welche eigentlich kein richtiges Design Pattern ist, sondern nur ein Idiom (immer wieder auftauchndes Konstrukt). Z.B. haben wir eine Methode mit einem Parameter, wobei der Parameter das Objekt bestimmt. Allerdings können neue Objekte hinzu kommen, wie zum Beispiel neue Gerichte in einem Restaurant o.ä., wodurch man diese auch bei der Methode berücksichtigen muss. Dadurch haben wir Code, welcher sich ändern kann. Dieser sollte in einer anderen Klasse abgelegt werden, anstatt mit nicht-verändertem Code zusammen zu lassen.
 
+In diesem Beispiel haben wir nun einen PizzaStore/Pizzeria, welcher Pizzen herstellt. Um nun den Code mit hoher Änderungswahrscheinlichkeit aus dem PizzaStore zu entfernen, können wir eine Factory erstellen, welche über die create-Methode verfügt und nach einem Parameter bestimmt, welche Pizza erstellt wird. Der Prozess der Bestellung wird sich nicht ändern, das Angebot der Pizzen wahrscheinlich schon.
+~~~ java
+public class PizzaStore {
+    SimplePizzaFactory factory;
+
+    public PizzaStore(SimplePizzaFactory factory){
+        this.factory = factory;
+    }
+
+    public Pizza orderPizza(String type){
+        Pizza pizza;
+        pizza = factory.createPizza(type);
+        pizza.prepare();
+        pizza.bake();
+        pizza.cut();
+        pizza.box();
+
+        return pizza;
+    }
+}
+
+public class SimplePizzaFactory {
+    public Pizza createPizza(String type){
+        Pizza pizza = null;
+
+        if(type.equals("cheese")){
+            pizza = new CheesePizza();
+        } else if(type.equals("salami")){
+            pizza = new SalamiPizza();
+        } else if(type.equals("mistake")){
+            pizza = new PineapplePizza();
+        }
+        return pizza;
+    }
+}
+
+// Pizza ist abstrakt. Methoden: prepare, bake, cut und box (alle nicht abstrakt). Werden geändert bzw. können geändert werden.
+~~~
+
 #### Factory Method
 
-Bei dem Factory Method Pattern haben wir eine abstrakte Klasse (Creator/Factory), welche *factoryMethod* als abstrakte Methode besitzt. Außerdem kann die Klasse weitere Methoden haben, welche mit dem Ergebnis der *factoryMethod* arbeiten. In diesem Pattern "entscheiden" die Subklassen (von der Creator-Klasse -> konkrete Creator/Factory), welches konkrete Objekt erstellt wird. Hiermit wird ausgedrückt, dass der Creator ohne Wissen über das eigentlich Ergebnis, geschrieben wurde und nicht weiß womit genau er arbeiten wird.<small>Es wäre auch möglich eine Standardvariante der *factoryMethod* festzulegen.</small>
+Bei dem Factory Method Pattern haben wir eine abstrakte Klasse (Creator/Factory), welche *factoryMethod* als abstrakte Methode besitzt. Außerdem kann die Klasse weitere Methoden haben, welche mit dem Ergebnis der *factoryMethod* arbeiten. In diesem Pattern "entscheiden" die Subklassen (von der Creator-Klasse -> konkrete Creator/Factory), welches konkrete Objekt erstellt wird. Mit "entscheiden" meint man hier, dass der Creator ohne Wissen über das eigentlich Ergebnis, geschrieben wurde und nicht weiß, womit genau er arbeiten wird.<small>Es wäre auch möglich eine Standardvariante der *factoryMethod* festzulegen.</small>
 Z.B. haben wir nun wieder einen PizzaStore (Creator), welcher mit Pizzen (abstrakte Klasse für das Produkt) arbeitet und nicht mit den konkreten Pizzen. Er bekommt zwar eine konkrete Pizza zum arbeiten, weiß aber nicht, welche Pizza es ist und dies braucht er auch nicht zu wissen. So lange alle wichtigen Methoden der Pizza in der abstrakten Klasse definiert wurden, kann er jede konkrete Pizza gleich behandeln.
+
+Der PizzaStore ist beim Factory Method Pattern eine abstrakte Klasse mit createPizza als abstrakte Methode, welche von den konkreten Factories implementiert werden muss.
+
+~~~ java
+public abstract class PizzaStore {
+    public Pizza orderPizza(String type) {
+        Pizza pizza = createPizza(type);
+        pizza.prepare();
+        pizza.bake();
+        pizza.cut();
+        pizza.box();
+        return pizza;
+    }
+    abstract Pizza createPizza(String type);
+}
+~~~
+
+Die konkreten PizzaStores sind der Simple Factory ziemlich ähnlich. Auch hier wird die Erstellung basierend auf dem Parameter vollführt.
+
+~~~ java
+public class NYPizzaStore extends PizzaStore {
+    Pizza createPizza(String item) {
+        if (item.equals("cheese")) {
+            return new NYStyleCheesePizza();
+        } // ...
+    }
+}
+public class ChicagoPizzaStore extends PizzaStore {
+    Pizza createPizza(String item) {
+        if (item.equals("cheese")) {
+            return new ChicagoStyleCheesePizza();
+        } // ...
+    }
+}
+~~~
 
 #### Abstract Factory
 
 Mit einer Abstract Factory hat man die Möglichkeit, Familien von Produkten bzw. Objekten zu erstellen. Wir haben also eine abstrakte Klasse, welche unsere Factory ist. In dieser werden die Methoden deklariert, welche für die Erstellung der einzelnen Prduktfamilienmitglieder zuständig sind. Die Subklassen dieser AbstractFactory kümmern sich um die Erzeugung der Objekte bzw. sie geben an welches konkrete Produkt erstellt wird. Somit kann man durch das Erzeugen einer der SubFactories bei einem Programm festlegen, welche Produkte es erhält. Oft wird für die konkreten Factories das Factory Method Pattern benutzt.
-Bsp.: Wir haben wieder einen PizzaStore, allerdings schauen wir dieses mal auf die Zutaten. Wir haben also eine AbstractFactory mit create-Methoden für die Zutaten wie Käse, Sauce, .... All diese Zutaten gehören zu der *Zutatenfamilie*. In den Subklassen werden nun die bereits definierten create-Methoden genutzt, um die jeweiligen Zutaten zu Erstellen. Nun wollen wir eine Margherita bzw. Käse Pizza. Wir übergeben der Käse Pizza-Klasse die jeweilige Subklassen-Factory, welche benötigt wird und dann kann durch aufrufen der create-Methoden die richtige Zutatenfamilie erhalten werden.
+Bsp.: Wir haben wieder einen PizzaStore, allerdings schauen wir dieses mal auf die Zutaten. 1) Am Anfang erstellen wir ein Interface mit create-Methoden für die Zutaten wie Käse, Sauce, ... (PizzaIngredientFactory). All diese Zutaten gehören zu der *Zutatenfamilie*. 2) In den Subklassen werden nun die bereits definierten create-Methoden genutzt, um die jeweiligen Zutaten zu erstellen. 3) Nun wollen wir eine Margherita bzw. Käse Pizza. Wir übergeben der Käse Pizza-Klasse die jeweilige Subklassen-Factory und dann wird durch das Aufrufen der create-Methoden die richtige Zutatenfamilie erhalten.
+
+1)
+~~~ java
+public interface PizzaIngredientFactory {
+	public Dough createDough();
+	public Sauce createSauce();
+	public Cheese createCheese();
+	public Veggies[] createVeggies();
+	public Pepperoni createPepperoni();
+}
+~~~
+
+2)
+~~~ java
+public class NYPizzaIngredientFactory implements PizzaIngredientFactory {
+	public Dough createDough() {
+		return new ThinCrustDough();
+	}
+	public Sauce createSauce() {
+		return new MarinaraSauce();
+	} // ...
+}
+
+public class ChicagoPizzaIngredientFactory implements PizzaIngredientFactory {
+	public Dough createDough() {
+		return new ThickCrustDough();
+	}
+	public Sauce createSauce() {
+		return new PlumTomatoSauce();
+	} // ...
+}
+~~~
+
+3)
+~~~ java
+public class CheesePizza extends Pizza {
+	PizzaIngredientFactory ingredientFactory;
+
+	public CheesePizza(PizzaIngredientFactory ingredientFactory) {
+		this.ingredientFactory = ingredientFactory;
+	}
+	void prepare() {
+		System.out.println("Preparing " + getName());
+		setDough(ingredientFactory.createDough());
+		setSauce(ingredientFactory.createSauce());
+		setCheese(ingredientFactory.createCheese());
+	}
+}
+~~~
+
+
 
 #### Factory Method vs. Abstract Factory
 
