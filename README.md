@@ -5,7 +5,7 @@
 - [Strategy Pattern](#strategy-pattern)
 - [Observer Pattern](#observer-pattern)
 - [Decorator Pattern](#decorator-pattern)
-- [Factory Pattern](#factroy-pattern)
+- [Factory Pattern](#factory-pattern)
 
 
 ## OO Principles
