@@ -16,13 +16,13 @@ Die Lösung für dieses Problem ist das Singleton Pattern, mit welchem man das K
 public class Singleton {
 	private static Singleton uniqueInstance;
 
-    private Singleton(){}
+	private Singleton(){}
 
 	public static Singleton getInstance(){
-    	if(uniqueInstance == null) uniqueInstance = new Singleton();
-        return uniqueInstance;
-    }
-    // weiterer benötigter Code
+		if(uniqueInstance == null) uniqueInstance = new Singleton();
+		return uniqueInstance;
+	}
+	// weiterer benötigter Code
 }
 ~~~
 
