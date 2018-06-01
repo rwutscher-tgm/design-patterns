@@ -1,7 +1,5 @@
 package observer_pattern;
 
-import javaObservable.CurrentConditionDisplay;
-
 public class ConcreteObserver implements Observer {
 
     private Object state;
