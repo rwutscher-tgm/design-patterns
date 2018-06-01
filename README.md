@@ -2,11 +2,11 @@
 
 ### Inhaltsverzeichnis
 
-- [Strategy Pattern](#strategy.md)
-- [Observer Pattern](#observer.md)
-- [Decorator Pattern](#decorator.md)
-- [Factory Pattern](#factory.md)
-- [Singleton Pattern](#singleton.md)
+- [Strategy Pattern](strategy.md)
+- [Observer Pattern](observer.md)
+- [Decorator Pattern](decorator.md)
+- [Factory Pattern](factory.md)
+- [Singleton Pattern](singleton.md)
 
 ## OO Principles
 
