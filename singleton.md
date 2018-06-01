@@ -38,13 +38,13 @@ public static synchronized Singleton getInstance(){...}
 // 3. double-checked looking
 private volatile static Singleton uniqueInstance;
 
-public static Singleton getInstance() {
+public static Singleton getInstance(){
 	if(uniqueInstance == null){
-    	synchronized(Singleton.class) {
-        	if(uniqueInstance == null){
-            	uniqueInstance = new Singleton();
-            }
-        }
-    }
+		synchronized(Singleton.class){
+			if(uniqueInstance == null){
+				uniqueInstance = new Singleton();
+			}
+		}
+	}
 }
 ~~~
