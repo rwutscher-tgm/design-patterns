@@ -1,6 +1,6 @@
 [back](README.md)
 
-#Singleton Pattern
+# Singleton Pattern
 
 ### Problem
 
@@ -16,13 +16,13 @@ Die Lösung für dieses Problem ist das Singleton Pattern, mit welchem man das K
 public class Singleton {
 	private static Singleton uniqueInstance;
 
-    private Singleton(){}
+	private Singleton(){}
 
 	public static Singleton getInstance(){
-    	if(uniqueInstance == null) uniqueInstance = new Singleton();
-        return uniqueInstance;
-    }
-    // weiterer benötigter Code
+		if(uniqueInstance == null) uniqueInstance = new Singleton();
+		return uniqueInstance;
+	}
+	// weiterer benötigter Code
 }
 ~~~
 
@@ -38,13 +38,13 @@ public static synchronized Singleton getInstance(){...}
 // 3. double-checked looking
 private volatile static Singleton uniqueInstance;
 
-public static Singleton getInstance() {
+public static Singleton getInstance(){
 	if(uniqueInstance == null){
-    	synchronized(Singleton.class) {
-        	if(uniqueInstance == null){
-            	uniqueInstance = new Singleton();
-            }
-        }
-    }
+		synchronized(Singleton.class){
+			if(uniqueInstance == null){
+				uniqueInstance = new Singleton();
+			}
+		}
+	}
 }
 ~~~
