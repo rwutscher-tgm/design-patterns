@@ -9,7 +9,7 @@ Wie schon bekannt ist, gilt das Principle *program to an interface, not an imple
 Die erste vorgestellte Möglichkeit ist die Simple Factory, welche eigentlich kein richtiges Design Pattern ist, sondern nur ein Idiom (immer wieder auftauchndes Konstrukt). Z.B. haben wir eine Methode mit einem Parameter, wobei der Parameter das Objekt bestimmt. Allerdings können neue Objekte hinzu kommen, wie zum Beispiel neue Gerichte in einem Restaurant o.ä., wodurch man diese auch bei der Methode berücksichtigen muss. Dadurch haben wir Code, welcher sich ändern kann. Dieser sollte in einer anderen Klasse abgelegt werden, anstatt mit nicht-verändertem Code zusammen zu lassen.
 
 In diesem Beispiel haben wir nun einen PizzaStore/Pizzeria, welcher Pizzen herstellt. Um nun den Code mit hoher Änderungswahrscheinlichkeit aus dem PizzaStore zu entfernen, können wir eine Factory erstellen, welche über die create-Methode verfügt und nach einem Parameter bestimmt, welche Pizza erstellt wird. Der Prozess der Bestellung wird sich nicht ändern, das Angebot der Pizzen wahrscheinlich schon.
-![Simple_Factory](https://github.com/TGM-HIT/sew4-design-patterns-ntesanovic-tgm/blob/master/images/simple_factory.png)
+![Simple_Factory](https://github.com/ntesanovic-tgm/design-patterns/tree/master/images/simple_factory.png)
 <small>[Head First Design Patterns](http://shop.oreilly.com/product/9780596007126.do) Seite 119</small>
 
 ~~~ java
@@ -53,7 +53,7 @@ public class SimplePizzaFactory {
 ### Factory Method
 
 Bei dem Factory Method Pattern haben wir eine abstrakte Klasse (Creator/Factory), welche *factoryMethod* als abstrakte Methode besitzt. Außerdem kann die Klasse weitere Methoden haben, welche mit dem Ergebnis der *factoryMethod* arbeiten. In diesem Pattern "entscheiden" die Subklassen (von der Creator-Klasse -> konkrete Creator/Factory), welches konkrete Objekt erstellt wird. Mit "entscheiden" meint man hier, dass der Creator ohne Wissen über das eigentlich Ergebnis, geschrieben wurde und nicht weiß, womit genau er arbeiten wird.<small>Es wäre auch möglich eine Standardvariante der *factoryMethod* festzulegen.</small>
-![Factory_Method_Pattern](https://github.com/TGM-HIT/sew4-design-patterns-ntesanovic-tgm/blob/master/images/factory_method.png)
+![Factory_Method_Pattern](https://github.com/ntesanovic-tgm/design-patterns/tree/master/images/factory_method.png)
 <small>[Head First Design Patterns](http://shop.oreilly.com/product/9780596007126.do) Seite 136</small>
 
 Z.B. haben wir nun wieder einen PizzaStore (Creator), welcher mit Pizzen (abstrakte Klasse für das Produkt) arbeitet und nicht mit den konkreten Pizzen. Er bekommt zwar eine konkrete Pizza zum arbeiten, weiß aber nicht, welche Pizza es ist und dies braucht er auch nicht zu wissen. So lange alle wichtigen Methoden der Pizza in der abstrakten Klasse definiert wurden, kann er jede konkrete Pizza gleich behandeln.
@@ -147,7 +147,7 @@ public class CheesePizza extends Pizza {
 }
 ~~~
 
-![Factory_Method_Pattern](https://github.com/TGM-HIT/sew4-design-patterns-ntesanovic-tgm/blob/master/images/abstract_factory.png)
+![Factory_Method_Pattern](https://github.com/ntesanovic-tgm/design-patterns/tree/master/images/abstract_factory.png)
 <small>[Head First Design Patterns](http://shop.oreilly.com/product/9780596007126.do) Seite 159</small>
 
 ### Factory Method vs. Abstract Factory
