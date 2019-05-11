@@ -10,7 +10,7 @@ In einigen Fällen ist es nützlich bzw. vielleicht sogar notwendig, dass nur ei
 
 Die Lösung für dieses Problem ist das Singleton Pattern, mit welchem man das Kriterium, von nur einer Instanz, erfüllen kann. Dies wird erreicht indem man das Objekt mit einem privatem Konstruktor erstellt. Hat ein Objekt einen private Konstruktor, kann es nicht mehr von einer anderen Klasse instanziiert werden, außer sich selbst. Um nun die einzelne Instanz des Objektes zu erhalten, braucht man eine statische getInstance-Methode. Die Methode muss statisch sein, da man nur statische Methoden ohne Objekt aufrufen kann. In getInstance wird nun das Objekt zurückgegeben bzw. erstellt, falls es noch nicht instanziiert wurde. Das Objekt wird in einem Attribut gespeichert.
 
-![Factory_Method_Pattern](https://github.com/ntesanovic-tgm/design-patterns/tree/master/images/singleton_pattern.png)
+![Factory_Method_Pattern](images/singleton_pattern.png)
 <small>[Head First Design Patterns](http://shop.oreilly.com/product/9780596007126.do) Seite 179</small>
 
 ~~~ java

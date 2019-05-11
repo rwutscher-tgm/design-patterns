@@ -12,19 +12,19 @@ Hier kommt außerdem ein neues OO Principle ins Spiel: *strive for loosely coupl
 Auch beim Observer Pattern gibt es wieder mehr als nur eine Möglichkeit das Problem zu lösen.
 
 1. *Java Observable*
-![Observable](https://github.com/ntesanovic-tgm/design-patterns/tree/master/images/java_observable.png)
+![Observable](images/java_observable.png)
 <small>[Head First Design Patterns](http://shop.oreilly.com/product/9780596007126.do) Seite 64</small>
 
 Bei dieser Lösung wird die in Java eingebaute Version des Observer Patterns verwendet. Das Problem bei dieser Variante des Observer Patterns ist, dass java.util.Observable eine Klasse ist. Das heißt, dass einige OO Principles wieder missachtet werden, da wir Vererbung statt Interfaces benutzen müssen.
-2. ***Observer Pattern*** <small>(aus dem Buch)</small>  
-![Observer_Pattern](https://github.com/ntesanovic-tgm/design-patterns/tree/master/images/observer.png)
+1. ***Observer Pattern*** <small>(aus dem Buch)</small>  
+![Observer_Pattern](images/observer.png)
 <small>[Head First Design Patterns](http://shop.oreilly.com/product/9780596007126.do) Seite 52</small>
 
 Hier haben wir nun die vom Buch vorgeschlagene Variante. Wir haben ein Interface für das Subjekt und wir haben ein Interface für die Observer. Es wird gezeigt, dass *Subject* eine HAS-A-Beziehung zu *Observer* hat. Das heißt, dass das Subjekt Beobachter hat. Allerdings gibt es hier auch noch eine HAS-A-Beziehung zwischen den konkreten Implementierungen. Dies ist etwas, was wir schon vorher als eher unerwünscht betrachtet haben. Allerdings kann man dadurch eine notify-Methode erstellen ohne Attribute. <small> Wieso dies so wichtig ist, weiß ich gerade auch nicht. </small>
 
 ### Beispiel
 
-![Observer_Pattern_Beispiel](https://github.com/ntesanovic-tgm/design-patterns/tree/master/images/observer_example.png)
+![Observer_Pattern_Beispiel](images/observer_example.png)
 <small>[Head First Design Patterns](http://shop.oreilly.com/product/9780596007126.do) Seite 56</small>
 
 In diesem Beispiel wollen wir die Daten einer Wetterstation erhalten und diese dann an alle Observer weitergeben. Wenn sich also das Wetter ändert, werden alle registrierten Beobachter, benachrichtigt und, da jedes der Displays schon ein WeatherData-Objekt besitzt, muss für *update* auch kein Parameter übergeben werden, um zu wissen, bei welchem Objekt sich die Daten geändert haben. Daraufhin können die Daten dann ausgegeben werden.  

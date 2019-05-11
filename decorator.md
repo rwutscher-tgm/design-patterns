@@ -26,7 +26,7 @@ Und nun kommen wir zum Decorator Pattern, mit welchem wir auch das Design Princi
 
 ### UML & Beispielcode
 
-![Observer_Pattern_Beispiel](https://github.com/ntesanovic-tgm/design-patterns/tree/master/images/decorator_pattern.PNG)
+![Observer_Pattern_Beispiel](images/decorator_pattern.PNG)
 <small>[Head First Design Patterns](http://shop.oreilly.com/product/9780596007126.do) Seite 93</small>
 
 Zuerst muss eine abstrakte Klasse für die Getränke erstellt werden, zusammen mit den konkreten Klassen.
