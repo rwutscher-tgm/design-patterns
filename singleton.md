@@ -15,7 +15,7 @@ Die Lösung für dieses Problem ist das Singleton Pattern, mit welchem man das K
 
 <small>[Head First Design Patterns](http://shop.oreilly.com/product/9780596007126.do) Seite 179</small>
 
-~~~ java
+``` java
 public class Singleton {
 	private static Singleton uniqueInstance;
 
@@ -27,11 +27,11 @@ public class Singleton {
 	}
 	// weiterer benötigter Code
 }
-~~~
+```
 
 Weitere Probleme könnten dann nur noch bei mehreren Threads auftauchen, wenn noch keine Objekt instanziiert wurde und meherere Threads fast gleichzeitig ein Objekt erstellen. Hierfür hat man wieder mehrere Lösungsmöglichkeiten
 
-~~~ java
+``` java
 // 1.
 private static Singleton uniqueInstance = new Singleton();
 
@@ -50,4 +50,4 @@ public static Singleton getInstance(){
 		}
 	}
 }
-~~~
+```
